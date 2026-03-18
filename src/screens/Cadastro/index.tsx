@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, ChangeEvent } from "react";
 import {
   Section,
   Container,
@@ -13,15 +13,29 @@ import Botao from "../../componentes/Botao/index.js";
 import CampoTexto from "../../componentes/CampoTexto/index.js";
 import Fieldset from "../../componentes/Fieldset/index.js";
 import Label from "../../componentes/Label/index.js";
+import { IUsuario } from "../../types/index.js";
+import { criarUsuario } from "../../api/index.js";
 
 const Cadastro = () => {
-  const [nome, setNome] = useState("");
-  const [renda, setRenda] = useState("");
+  const [form, setForm] = useState<Omit<IUsuario, "id">>({
+    nome: "",
+    renda: 0,
+  });
+
+  const aoDigitarCampoTexto = (campo: "nome" | "renda", valor: string) => {
+    setForm((prev) => ({ ...prev, [campo]: valor }));
+  };
 
   const navigate = useNavigate();
 
-  const aoSubmeterFormulario = (evento: React.FormEvent) => {
+  const aoSubmeterFormulario = async (evento: React.FormEvent) => {
     evento.preventDefault();
+    try {
+      const novoUsario = await criarUsuario(form);
+      console.log("Usuário criado com sucesso:", novoUsario);
+    } catch (err) {
+      console.error(err);
+    }
     navigate("/home");
   };
 
@@ -41,8 +55,10 @@ const Cadastro = () => {
               <CampoTexto
                 type="text"
                 name="nome"
-                value={nome}
-                onChange={(e) => setNome(e.target.value)}
+                value={form.nome}
+                onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                  aoDigitarCampoTexto("nome", e.target.value)
+                }
               />
             </Fieldset>
             <Fieldset>
@@ -50,8 +66,10 @@ const Cadastro = () => {
               <CampoTexto
                 type="text"
                 name="renda"
-                value={renda}
-                onChange={(e) => setRenda(e.target.value)}
+                value={form.renda}
+                onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                  aoDigitarCampoTexto("renda", e.target.value)
+                }
               />
             </Fieldset>
           </Form>
