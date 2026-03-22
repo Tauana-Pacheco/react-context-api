@@ -14,7 +14,7 @@ import CampoTexto from "../../componentes/CampoTexto/index.js";
 import Fieldset from "../../componentes/Fieldset/index.js";
 import Label from "../../componentes/Label/index.js";
 import { IUsuario } from "../../types/index.js";
-import { criarUsuario } from "../../api/index.js";
+import { useAppContext } from "../../context/AppContext.js";
 
 const Cadastro = () => {
   const [form, setForm] = useState<Omit<IUsuario, "id">>({
@@ -28,11 +28,13 @@ const Cadastro = () => {
 
   const navigate = useNavigate();
 
+  const { criaUsuario } = useAppContext();
+
   const aoSubmeterFormulario = async (evento: React.FormEvent) => {
     evento.preventDefault();
     try {
-      const novoUsario = await criarUsuario(form);
-      console.log("Usuário criado com sucesso:", novoUsario);
+      await criaUsuario(form);
+      console.log("Usuário criado com sucesso:");
     } catch (err) {
       console.error(err);
     }

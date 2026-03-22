@@ -1,4 +1,21 @@
 {
-  "usuarios": [],
-  "transacoes": []
+  "usuarios": [
+    {
+      "nome": "Juliana",
+      "renda": "22.000",
+      "id": "BYQzQIady6E"
+    },
+    {
+      "nome": "Maria",
+      "renda": "1220",
+      "id": "WeWFhwlCsFE"
+    },
+    {
+      "nome": "João",
+      "renda": "4000",
+      "id": "f024LziN_FI"
+    }
+  ],
+  "transacoes": [],
+  "$schema": "./node_modules/json-server/schema.json"
 }
